@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+
+    <!-- Detail Activity-->
+    <string name="description_of_movie">Synopsis:-</string>
+    <string name="Title_of_movie">Movie Title:-</string>
+    <string name="rating_of_movie">Popularity:-</string>
+    <string name="date_of_release">Release Date:-</string>
+    <string name="user_rating">User Score:-</string>
+
+
+    <!-- Content descriptions-->
+    <string name="movie_picture_content_description">Movie picture</string>
+
+    <!-- Error messages -->
+    <string name="detail_error_message">Movie data not available/Check Internet Connection</string>
+
+
+    <!-- Menu Button detail-->
+    <string name="menu_sort_Top_Rated">Sort Movies by Top Rated</string>
+    <string name="menu_sort_Popularity">Sort Movies by Popularity</string>
+    <string name="menu_sort_Favourite">Sort Movies by Favourite</string>
+
+
+    <!-- Menu Button detail-->
+    <string name="review_author_movie_description">Author:</string>
+    <string name="review_content_movie_description">Review:</string>
+
+
+</resources>
