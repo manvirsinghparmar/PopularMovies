@@ -11,7 +11,7 @@ public interface MovieReviewsAPI {
 
 
     //Popular movies Reviews
-    @GET("reviews?api_key=652f215200fe98dd39d7259b5be7deac")
+    @GET("reviews?api_key=Enter Your API Key")
     Call<ResultReviews> getPopularmovieReviews();
 }
 
