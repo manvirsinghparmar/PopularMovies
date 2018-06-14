@@ -30,9 +30,12 @@ public class GridViewAdapter extends ArrayAdapter<Results> {
     private ArrayList<Results> mGridData;
 
 
+
     private final String BASE_URL_IMAGE = "http://image.tmdb.org/t/p/";
 
     private final static String QUERY_PARAM = "w185";
+
+
 
 
     public GridViewAdapter(Context mContext, int layoutResourceId, ArrayList<Results> mGridData) {
@@ -102,5 +105,5 @@ public class GridViewAdapter extends ArrayAdapter<Results> {
         ImageView imageView;
 
     }
-    
+
 }

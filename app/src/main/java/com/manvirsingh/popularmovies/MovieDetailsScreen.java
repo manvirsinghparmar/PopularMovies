@@ -181,33 +181,36 @@ public class MovieDetailsScreen extends AppCompatActivity {
                 if (!movieisFavorite()) {
                     Log.d(TAG, "doInBackground: MSP-AddtoFavourite- Movie is Not Favourite and Data input has started");
 
-                   Intent incomingIntent = getIntent();
+                    Intent incomingIntent = getIntent();
                     //Getting Movie ID from incoming Intent
-                   int movieid = incomingIntent.getIntExtra("movieid", 0);
+                    int movieid = incomingIntent.getIntExtra("movieid", 0);
                     Log.d(TAG, "doInBackground: ABCD");
 
-                   String movieID = String.valueOf(movieid);
-                   String movieTitle=incomingIntent.getStringExtra("title");
-                   String movieRelease=incomingIntent.getStringExtra("release_date");
-                   double dmovieVotes=incomingIntent.getDoubleExtra("vote_average",0);
-                   String movieVotes=String.valueOf(dmovieVotes);
-                    Log.d(TAG, "doInBackground: CBA: "+ movieVotes);
-                   String moviesynopsis=incomingIntent.getStringExtra("overview");
-                   String moviePoster=incomingIntent.getStringExtra("poster_path");
+                    String movieID = String.valueOf(movieid);
+                    String movieTitle = incomingIntent.getStringExtra("title");
+                    String movieRelease = incomingIntent.getStringExtra("release_date");
+                    double dmovieVotes = incomingIntent.getDoubleExtra("vote_average", 0);
+                    String movieVotes = String.valueOf(dmovieVotes);
+                    Log.d(TAG, "doInBackground: CBA: " + movieVotes);
+                    String moviesynopsis = incomingIntent.getStringExtra("overview");
+                    String moviePoster = incomingIntent.getStringExtra("poster_path");
 
                     ContentValues cv = new ContentValues();
-                    cv.put(COLUMN_MOVIE_ID,movieID);
+                    cv.put(COLUMN_MOVIE_ID, movieID);
                     cv.put(COLUMN_MOVIE_TITLE, movieTitle);
                     cv.put(COLUMN_DATE_OF_RELEASE, movieRelease);
-                    cv.put(COLUMN_VOTER_AVERAGE, movieVotes);
-                    cv.put(COLUMN_MOVIE_SYNOPSIS, moviesynopsis);
                     cv.put(COLUMN_POSTER_PATH, moviePoster);
+                    cv.put(COLUMN_MOVIE_SYNOPSIS, moviesynopsis);
+                    cv.put(COLUMN_VOTER_AVERAGE, movieVotes);
 
-                   Uri uri=getContentResolver().insert(MoviesContract.MoviesFavourite.CONTENT_URI, cv);
 
-                    Log.d(TAG, "doInBackground: ABCD- "+ uri);
+                    Log.d(TAG, "doInBackground: AAAA: Content Values: " + cv);
 
-                    }
+                    final Uri uri = getContentResolver().insert(MoviesContract.MoviesFavourite.CONTENT_URI, cv);
+
+                    Log.d(TAG, "doInBackground: ABCD- " + uri);
+
+                }
 
                 return null;
             }
@@ -231,7 +234,7 @@ public class MovieDetailsScreen extends AppCompatActivity {
 
                 if (movieisFavorite()) {
 
-                   Uri uri = CONTENT_URI;
+                    Uri uri = CONTENT_URI;
                     Intent incomingIntent = getIntent();
                     //Getting Movie ID from incoming Intent
                     int movieid = incomingIntent.getIntExtra("movieid", 0);
@@ -240,15 +243,14 @@ public class MovieDetailsScreen extends AppCompatActivity {
                     String movieID = String.valueOf(movieid);
 
 
-
                     getContentResolver().delete(uri, COLUMN_MOVIE_ID + " = " + movieID, null);
 
                     Log.d(TAG, "doInBackground: ABCD: Remove button executed ");
 
-
-                    }
+                }
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void aVoid) {
                 updateFavoriteButtons();
@@ -264,8 +266,9 @@ public class MovieDetailsScreen extends AppCompatActivity {
             @Override
             protected Boolean doInBackground(Void... voids) {
                 return movieisFavorite();
-                
+
             }
+
             @Override
             protected void onPostExecute(Boolean aBoolean) {
                 if (movieisFavorite()) {
@@ -299,30 +302,30 @@ public class MovieDetailsScreen extends AppCompatActivity {
 
 
         String movieID = String.valueOf(movieid);
-        Log.d(TAG, "movieisFavorite: ABCD: Incoming Intent Movie ID : "+ movieID);
+        Log.d(TAG, "movieisFavorite: ABCD: Incoming Intent Movie ID : " + movieID);
 
 
-
-        String[]mSelectionArgs=new String[]{MoviesContract.MoviesFavourite.COLUMN_MOVIE_ID};
-        String mSelection=" = ";
+        String[] mSelectionArgs = new String[]{MoviesContract.MoviesFavourite.COLUMN_MOVIE_ID};
+        String mSelection = " = ";
         Cursor movieCursor = getContentResolver().query(
                 MoviesContract.MoviesFavourite.CONTENT_URI,
                 mSelectionArgs,
-                MoviesContract.MoviesFavourite.COLUMN_MOVIE_ID +mSelection+ movieID,
+                MoviesContract.MoviesFavourite.COLUMN_MOVIE_ID + mSelection + movieID,
                 null,
                 null);
 
-        Log.d(TAG, "movieisFavorite: ABCD cursor- "+ movieCursor);
+        Log.d(TAG, "movieisFavorite: ABCD cursor- " + movieCursor);
 
 
-        if (movieCursor != null && movieCursor.moveToFirst())
-        {
+        if (movieCursor != null && movieCursor.moveToFirst()) {
             movieCursor.close();
             return true;
         } else {
             return false;
         }
     }
+
+
 
 
 }

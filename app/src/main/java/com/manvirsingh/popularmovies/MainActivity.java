@@ -18,11 +18,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.manvirsingh.popularmovies.DataBase.MovieDBhelper;
 import com.manvirsingh.popularmovies.DataBase.MoviesContract;
 import com.manvirsingh.popularmovies.MovieAttributes.MovieAttributes;
 import com.manvirsingh.popularmovies.MovieAttributes.Results;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +32,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-    public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -41,7 +43,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
     private ProgressBar progressBar;
     private TextView ErrorMessageDisplay;
     private GridViewAdapter mGridAdapter;
-    private CustomCursorAdapter cCursorAdapter;
+
+    private ArrayList<Results> mMovies = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,30 +292,73 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
                 Cursor cursor = getContentResolver().query(MoviesContract.MoviesFavourite.CONTENT_URI, null, null, null, null);
-                Log.d(TAG, "doInBackground: ABCD: " + cursor);
+                Log.d(TAG, "doInBackground:: " + cursor);
 
-
-                return null;
+                return cursor;
             }
 
             @Override
-            protected void onPostExecute(Cursor aVoid) {
+            protected void onPostExecute(Cursor cursor) {
                 progressBar.setVisibility(View.INVISIBLE);
 
+                super.onPostExecute(cursor);
+                mMovies.clear();
 
-                super.onPostExecute(aVoid);
+
+                cursor.moveToFirst();
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        String mTitle = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_TITLE);
+                        Log.d(TAG, "onPostExecute: ABCD: Movie Title: " + mTitle);
+
+                        int mMovieID = cursor.getInt(MoviesContract.MoviesFavourite.COL_MOVIE_ID);
+                        Log.d(TAG, "onPostExecute: ABCD: Movie ID: " + mMovieID);
+
+                        String mSynopsis = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_SYNOPSIS);
+                        Log.d(TAG, "onPostExecute: ABCD:: Movie Synopsis" + mSynopsis);
+
+                        String mPosterPath = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_POSTER_PATH);
+                        Log.d(TAG, "onPostExecute: ABCD: Movie Poster path" + mPosterPath);
+
+                        String mRelease = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_DATE_OF_RELEASE);
+                        Log.d(TAG, "onPostExecute: ABCD: Movie Date of release: " + mRelease);
+
+                        Double mVoteAverage = cursor.getDouble(MoviesContract.MoviesFavourite.COL_MOVIE_VOTER_AVERAGE);
+
+                        Log.d(TAG, "onPostExecute: ABCD: Voter Average:" + mVoteAverage);
+
+
+                        Results results = new Results(mMovieID,mTitle, mRelease,  mPosterPath, mSynopsis, mVoteAverage);
+
+                        Log.d(TAG, "onPostExecute: : Results" + results);
+
+                        mMovies.add(results);
+                    }
+
+
+                    while (cursor.moveToNext());
+                    Log.d(TAG, "onPostExecute:  mMovies:" + mMovies);
+
+                }
+
+
+
+                mGridAdapter = new GridViewAdapter(MainActivity.this, R.layout.layout_for_grid, mMovies);
+                gridView.setAdapter(mGridAdapter);
+                gridView.setVisibility(View.VISIBLE);
+
+
+
             }
 
             @Override
             protected void onPreExecute() {
-
                 progressBar.setVisibility(View.VISIBLE);
                 super.onPreExecute();
             }
         }.execute();
-
-
     }
+
 
     //Method to save instance upon change in Device orientation
     @Override
@@ -340,6 +386,5 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
         super.onSaveInstanceState(outState);
     }
-
 
 }

@@ -1,10 +1,11 @@
 package com.manvirsingh.popularmovies.MovieAttributes;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class Results implements Parcelable {
+    public class Results implements Parcelable {
     private static final String TAG = "Results";
 
     private String title;
@@ -14,10 +15,10 @@ public class Results implements Parcelable {
     private double vote_average;
     private int id;
 
-    private Results() {
+     public Results() {
     }
 
-    public Results(String title,  String poster_path, String overview, String release_date, double vote_average, int id) {
+    public Results( int id,String title,String release_date,String poster_path,String overview, double vote_average ) {
         this.title = title;
         this.poster_path = poster_path;
         this.overview = overview;
@@ -26,55 +27,42 @@ public class Results implements Parcelable {
         this.id = id;
     }
 
-    public int getId() {
+        public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     public double getVote_average() {
         return vote_average;
     }
 
-    public void setVote_average(double vote_average) {
-        this.vote_average = vote_average;
-    }
+
 
     public String getTitle() {
         return title;
 
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+
 
 
     public String getPoster_path() {
         return poster_path;
     }
 
-    public void setPoster_path(String poster_path) {
-        this.poster_path = poster_path;
-    }
+
 
     public String getOverview() {
         return overview;
     }
 
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
 
     public String getRelease_date() {
         return release_date;
     }
 
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
-    }
+
 
 
     @Override
@@ -94,7 +82,7 @@ public class Results implements Parcelable {
 
     }
 
-    private Results(Parcel in) {
+    public Results(Parcel in) {
         title = in.readString();
 
         poster_path = in.readString();
