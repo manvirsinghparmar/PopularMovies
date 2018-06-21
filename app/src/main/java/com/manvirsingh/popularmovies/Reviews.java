@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.manvirsingh.popularmovies.MovieReviews.MovieReview;
@@ -32,25 +33,32 @@ public class Reviews extends AppCompatActivity {
 
     private RecyclerView mRecylerView;
 
-    //ProgressBar progressBar;
+    private ProgressBar progressBar;
+
+    private TextView Errormessage;
+
+    private TextView EmptyReview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate: BKP- On Create Started");
+        Log.d(TAG, "onCreate: MSP- On Create Started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reviews);
 
         mRecylerView = (RecyclerView) findViewById(R.id.recyclerView);
-        //progressBar=(ProgressBar)findViewById(R.id.review_progressbar);
+        progressBar = (ProgressBar) findViewById(R.id.review_progressbar);
+        Errormessage = (TextView) findViewById(R.id.error_message_review);
+        EmptyReview=(TextView)findViewById(R.id.Review_empty_message);
 
         FetchJSONDataReview();
     }
 
 
     public void FetchJSONDataReview() {
+        progressBar.setVisibility(View.VISIBLE);
 
 
-        Log.d(TAG, "FetchJSONDataReview: BKP -FetchJSONDataReview ");
+        Log.d(TAG, "FetchJSONDataReview: MSP -FetchJSONDataReview ");
 
         Intent incoming = getIntent();
 
@@ -74,7 +82,6 @@ public class Reviews extends AppCompatActivity {
 
         Call<ResultReviews> call = moviereviewAPI.getPopularmovieReviews();
 
-        //progressBar.setVisibility(View.VISIBLE);
 
         call.enqueue(new Callback<ResultReviews>() {
             @Override
@@ -91,11 +98,10 @@ public class Reviews extends AppCompatActivity {
 
                     Log.d(TAG, "onResponse: MSP- Null Pointer Exception:" + e.getMessage());
                 }
-                //progressBar.setVisibility(View.INVISIBLE);
-
 
                 final ArrayList<MovieReview> list = response.body().getReview();
 
+                progressBar.setVisibility(View.GONE);
 
                 for (int i = 0; i < list.size(); i++) {
                     Log.d(TAG, "onResponse: \n" + "MSP-Author:" + list.get(i).getAuthor() + "\n"
@@ -104,16 +110,27 @@ public class Reviews extends AppCompatActivity {
                     );
 
                 }
-                mRecylerView.setAdapter(new MovieReviewsAdapter(list, getApplicationContext()));
-                Log.d(TAG, "onResponse: BKP -Set Adapter");
-                mRecylerView.setHasFixedSize(true);
-                Log.d(TAG, "onResponse: BKP- Set Size");
-                mRecylerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                Log.d(TAG, "onResponse: BKP- Set Layout Manager");
+
+                if (list.isEmpty()) {
+                    Log.d(TAG, "onResponse: ");
+                    EmptyReview.setVisibility(View.VISIBLE);
+                    EmptyReview.setText("No Reviews Available for this movie");
+
+
+                } else {
+                    mRecylerView.setAdapter(new MovieReviewsAdapter(list, getApplicationContext()));
+                    Log.d(TAG, "onResponse: MSP -Set Adapter");
+                    mRecylerView.setHasFixedSize(true);
+                    Log.d(TAG, "onResponse: MSP- Set Size");
+                    mRecylerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    Log.d(TAG, "onResponse: MSP- Set Layout Manager");
+                }
             }
 
             @Override
             public void onFailure(Call<ResultReviews> call, Throwable t) {
+                Errormessage.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
 
                 Toast.makeText(Reviews.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
 

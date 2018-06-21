@@ -6,9 +6,71 @@
     android:layout_height="match_parent"
     tools:context=".Trailers">
 
+    <ProgressBar
+        android:id="@+id/trailer_progressbar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTrailer"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerViewTrailer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTrailer" />
+
+    <TextView
+        android:id="@+id/error_message_trailer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="200dp"
+        android:text="@string/detail_error_message"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/main_progressbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTrailer"
+        app:layout_constraintVertical_bias="0.661" />
+
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewTrailer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerViewTrailer"></android.support.v7.widget.RecyclerView>
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginRight="72dp"
+        android:textColor="@color/Dark_Red"
+        app:layout_constraintBottom_toBottomOf="@+id/trailer_progressbar"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerViewTrailer"
+        tools:text="No Trailers Available for this movie"
+        android:id="@+id/Trailer_empty_message"
+        android:visibility="gone"/>
+
 
 </android.support.constraint.ConstraintLayout>

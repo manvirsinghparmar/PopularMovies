@@ -12,6 +12,6 @@ public interface MovieTrailerAPI {
 
 
     //Popular movies Trailers
-    @GET("videos?api_key=Enter your API Key Here")
+    @GET("videos?api_key=652f215200fe98dd39d7259b5be7deac")
     Call<ResultTrailers> getPopularmovieTrailers();
 }

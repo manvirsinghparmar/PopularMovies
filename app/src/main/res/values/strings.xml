@@ -22,9 +22,26 @@
     <string name="menu_sort_Favourite">Sort Movies by Favourite</string>
 
 
-    <!-- Menu Button detail-->
+    <!-- Review UI-->
     <string name="review_author_movie_description">Author:</string>
     <string name="review_content_movie_description">Review:</string>
+
+    <!-- Trailer Button-->
+    <string name="Trailer_Button">PLAY TRAILERS</string>
+
+    <!-- Review Button-->
+    <string name="Review_Button">READ REVIEWS</string>
+
+    <!-- Favourite Buttons-->
+    <string name="Mark_As_Favourite_Button">MARK AS FAVORITE</string>
+    <string name="Remove_as_Favorite_Button">REMOVE AS FAVORITE</string>
+
+    <!-- Favourite Buttons-->
+    <string name="Voter_Average_out_of">/10</string>
+
+
+
+
 
 
 </resources>

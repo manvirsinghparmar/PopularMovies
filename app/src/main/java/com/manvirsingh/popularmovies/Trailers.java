@@ -2,6 +2,7 @@ package com.manvirsingh.popularmovies;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.manvirsingh.popularmovies.MovieAttributes.Results;
 import com.manvirsingh.popularmovies.MovieReviews.MovieReview;
 import com.manvirsingh.popularmovies.MovieReviews.MovieReviewsAPI;
 import com.manvirsingh.popularmovies.MovieReviews.MovieReviewsAdapter;
@@ -37,6 +40,23 @@ public class Trailers extends AppCompatActivity {
 
     private RecyclerView tRecylerView;
 
+    ArrayList<MovieTrailer> trailers;
+
+    MovieTrailer movieTrailer;
+
+    private MovieTrailerAdapter movieTrailerAdapter;
+    private ProgressBar progressBar;
+    private TextView ErrorMessageDisplay;
+    private TextView TrailerEmptyMessage;
+
+    private static Bundle mSavedInstanceState;
+
+    private static final String SAVED_RECYCLER_VIEW_STATUS_ID = "saved_recycler_view_status";
+
+    private static final String SAVED_RECYCLER_VIEW_DATASET_ID = "saved_reycler_view_dataset_id";
+
+
+    private Parcelable listState;
 
 
     @Override
@@ -45,8 +65,9 @@ public class Trailers extends AppCompatActivity {
         setContentView(R.layout.activity_trailers);
 
         tRecylerView = (RecyclerView) findViewById(R.id.recyclerViewTrailer);
-
-
+        progressBar = (ProgressBar) findViewById(R.id.trailer_progressbar);
+        ErrorMessageDisplay = (TextView) findViewById(R.id.error_message_trailer);
+        TrailerEmptyMessage = (TextView) findViewById(R.id.Trailer_empty_message);
 
         FetchJSONDataTrailers();
 
@@ -55,8 +76,8 @@ public class Trailers extends AppCompatActivity {
     public void FetchJSONDataTrailers() {
 
 
-
-        Log.d(TAG, "FetchJSONDataReview: BKP -FetchJSONDataReview ");
+        Log.d(TAG, "FetchJSONDataReview: MSP -FetchJSONDataReview ");
+        progressBar.setVisibility(View.VISIBLE);
 
         Intent incoming = getIntent();
 
@@ -81,8 +102,6 @@ public class Trailers extends AppCompatActivity {
         Call<ResultTrailers> call = movieTrailerAPI.getPopularmovieTrailers();
 
 
-
-
         call.enqueue(new Callback<ResultTrailers>() {
             @Override
             public void onResponse(Call<ResultTrailers> call, Response<ResultTrailers> response) {
@@ -100,9 +119,9 @@ public class Trailers extends AppCompatActivity {
                 }
 
 
-
-
                 final ArrayList<MovieTrailer> list = response.body().getTrailers();
+
+                progressBar.setVisibility(View.GONE);
 
 
                 for (int i = 0; i < list.size(); i++) {
@@ -112,21 +131,27 @@ public class Trailers extends AppCompatActivity {
                             + "MSP- Name" + list.get(i).getName() + "\n\n\n"
                     );
 
+                    if (list.isEmpty()) {
+                        TrailerEmptyMessage.setVisibility(View.VISIBLE);
+                        TrailerEmptyMessage.setText("No Trailers Available for this movie");
+                    } else {
 
-                    tRecylerView.setAdapter(new MovieTrailerAdapter(list,getApplicationContext()));
-                    Log.d(TAG, "onResponse: MSP- Set Adapter");
-                    tRecylerView.setHasFixedSize(true);
-                    Log.d(TAG, "onResponse: MSP- Fas fixed Size");
-                    tRecylerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    Log.d(TAG, "onResponse: MSP- Linear Layout Manager");
-
-
+                        tRecylerView.setAdapter(new MovieTrailerAdapter(list, getApplicationContext()));
+                        Log.d(TAG, "onResponse: MSP- Set Adapter");
+                        tRecylerView.setHasFixedSize(true);
+                        Log.d(TAG, "onResponse: MSP- Fas fixed Size");
+                        tRecylerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        Log.d(TAG, "onResponse: MSP- Linear Layout Manager");
+                    }
                 }
 
             }
 
             @Override
             public void onFailure(Call<ResultTrailers> call, Throwable t) {
+
+                showErrorMessage();
+                progressBar.setVisibility(View.GONE);
 
                 Toast.makeText(Trailers.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
 
@@ -135,5 +160,12 @@ public class Trailers extends AppCompatActivity {
     }
 
 
+    public void showErrorMessage() {
+        Log.d(TAG, "showErrorMessage:NIDHI- Show Error");
+
+        ErrorMessageDisplay.setVisibility(View.VISIBLE);
+        tRecylerView.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
+    }
 }
 

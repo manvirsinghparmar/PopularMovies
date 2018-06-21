@@ -18,13 +18,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.manvirsingh.popularmovies.DataBase.MovieDBhelper;
 import com.manvirsingh.popularmovies.DataBase.MoviesContract;
 import com.manvirsingh.popularmovies.MovieAttributes.MovieAttributes;
 import com.manvirsingh.popularmovies.MovieAttributes.Results;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,14 +35,16 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private final static String BASE_URL = "https://api.themoviedb.org";
-
-
     private GridView gridView;
     private ProgressBar progressBar;
     private TextView ErrorMessageDisplay;
     private GridViewAdapter mGridAdapter;
-
+    private TextView Emptyfavoritemovies;
+    private Results results = new Results();
     private ArrayList<Results> mMovies = new ArrayList<>();
+
+    MovieDetailsScreen movieDetailsScreen = new MovieDetailsScreen();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +56,17 @@ public class MainActivity extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.main_grid_View);
         progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
         ErrorMessageDisplay = (TextView) findViewById(R.id.error_message);
+        Emptyfavoritemovies = (TextView) findViewById(R.id.Favorite_movie_empty);
 
 
         //Checking Saved Instance state during onCreate
         if (savedInstanceState == null) {
-            Log.d(TAG, "onCreate: MSP- Saved Instance is Null");
+
             FetchJSONPopularMovies();
         } else {
-            Log.d(TAG, "onCreate: MSP- Saved Instance is NOT Null");
+
 
             if ((savedInstanceState.containsKey("Saved_movies")) && isNetworkConnected(this)) {
-                Log.d(TAG, "onCreate: MSP-Save Instance Conditon check");
 
 
                 ArrayList<Results> movies = savedInstanceState.getParcelableArrayList("Saved_movies");
@@ -80,20 +80,22 @@ public class MainActivity extends AppCompatActivity {
                     senddataIntent();
 
                 } catch (NullPointerException e) {
-                    Log.d(TAG, "onCreate: Msp-NullPointerException" + e.getMessage());
+                    Log.d(TAG, "onCreate: MSP-NullPointerException" + e.getMessage());
                 }
 
             } else {
-                //Checking both network state as well as save instance
+
                 if (savedInstanceState.containsKey("error") || !isNetworkConnected(this)) {
-                    Log.d(TAG, "onCreate: MSP Error Message ");
 
                     ErrorMessageDisplay.setVisibility(View.VISIBLE);
-                }
 
+
+                }
             }
         }
+
     }
+
 
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Method to fetch JSON data from moviedb for Popular Movies
     public void FetchJSONPopularMovies() {
+        Emptyfavoritemovies.setVisibility(View.GONE);
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
@@ -130,12 +133,6 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.INVISIBLE);
 
                 for (int i = 0; i < list.size(); i++) {
-                    Log.d(TAG, "onResponse: \n" + "title:" + list.get(i).getTitle() + "\n"
-
-                            + "Release Date: " + list.get(i).getRelease_date() + "\n"
-                            + "Poster Path:" + list.get(i).getPoster_path() + "\n"
-                            + "Over View:" + list.get(i).getOverview() + "\n\n\n"
-                    );
 
                     mGridAdapter = new GridViewAdapter(MainActivity.this, R.layout.layout_for_grid, list);
                     gridView.setAdapter(mGridAdapter);
@@ -144,17 +141,14 @@ public class MainActivity extends AppCompatActivity {
                 //Method call for ON click respond
                 senddataIntent();
 
-
             }
 
             @Override
             public void onFailure(Call<MovieAttributes> call, Throwable t) {
-                Log.d(TAG, "onFailure: MSP- ON FAILURE: " + t.getMessage());
 
                 showErrorMessage();
 
                 Toast.makeText(MainActivity.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
-
 
             }
         });
@@ -163,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Method to fetch JSON data from moviedb for Top Rated Movies
     public void FetchJSONTopRatedMovies() {
+        Emptyfavoritemovies.setVisibility(View.GONE);
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
@@ -189,12 +184,6 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.INVISIBLE);
 
                 for (int i = 0; i < list.size(); i++) {
-                    Log.d(TAG, "onResponse: \n" + "title:" + list.get(i).getTitle() + "\n"
-
-                            + "Release Date: " + list.get(i).getRelease_date() + "\n"
-                            + "Poster Path:" + list.get(i).getPoster_path() + "\n"
-                            + "Over View:" + list.get(i).getOverview() + "\n\n\n"
-                    );
 
                     mGridAdapter = new GridViewAdapter(MainActivity.this, R.layout.layout_for_grid, list);
                     gridView.setAdapter(mGridAdapter);
@@ -206,8 +195,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<MovieAttributes> call, Throwable t) {
-                Log.d(TAG, "onFailure: MSP- ON FAILURE: " + t.getMessage());
-
                 showErrorMessage();
 
                 Toast.makeText(MainActivity.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
@@ -261,22 +248,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int selecteditem = item.getItemId();
+        final int selecteditem = item.getItemId();
 
         switch (selecteditem) {
+
             case R.id.menu_user_score:
                 item.setChecked(true);
                 ErrorMessageDisplay.setVisibility(View.INVISIBLE);
                 FetchJSONPopularMovies();
                 break;
+
             case R.id.menu_popularity:
                 item.setChecked(true);
                 ErrorMessageDisplay.setVisibility(View.INVISIBLE);
                 FetchJSONTopRatedMovies();
                 break;
+
             case R.id.menu_favourite:
                 ErrorMessageDisplay.setVisibility(View.INVISIBLE);
                 FetchFavouriteMovies();
+                break;
+
             default:
                 return true;
 
@@ -285,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void FetchFavouriteMovies() {
+        Log.d(TAG, "FetchFavouriteMovies: ABC: FetchFavouriteMovies ");
 
         new AsyncTask<Void, Void, Cursor>() {
             @Override
@@ -294,61 +287,48 @@ public class MainActivity extends AppCompatActivity {
                 Cursor cursor = getContentResolver().query(MoviesContract.MoviesFavourite.CONTENT_URI, null, null, null, null);
                 Log.d(TAG, "doInBackground:: " + cursor);
 
+               mMovies.clear();
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        String mTitle = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_TITLE);
+                        int mMovieID = cursor.getInt(MoviesContract.MoviesFavourite.COL_MOVIE_ID);
+                        String mSynopsis = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_SYNOPSIS);
+                        String mPosterPath = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_POSTER_PATH);
+                        String mRelease = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_DATE_OF_RELEASE);
+                        Double mVoteAverage = cursor.getDouble(MoviesContract.MoviesFavourite.COL_MOVIE_VOTER_AVERAGE);
+
+                        Results results = new Results(mMovieID, mTitle, mRelease, mPosterPath, mSynopsis, mVoteAverage);
+
+                        mMovies.add(results);
+
+
+                    }
+
+                    while (cursor.moveToNext());
+                }
+
                 return cursor;
             }
 
             @Override
             protected void onPostExecute(Cursor cursor) {
-                progressBar.setVisibility(View.INVISIBLE);
-
+               progressBar.setVisibility(View.INVISIBLE);
                 super.onPostExecute(cursor);
-                mMovies.clear();
 
 
-                cursor.moveToFirst();
-                if (cursor != null && cursor.moveToFirst()) {
-                    do {
-                        String mTitle = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_TITLE);
-                        Log.d(TAG, "onPostExecute: ABCD: Movie Title: " + mTitle);
-
-                        int mMovieID = cursor.getInt(MoviesContract.MoviesFavourite.COL_MOVIE_ID);
-                        Log.d(TAG, "onPostExecute: ABCD: Movie ID: " + mMovieID);
-
-                        String mSynopsis = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_SYNOPSIS);
-                        Log.d(TAG, "onPostExecute: ABCD:: Movie Synopsis" + mSynopsis);
-
-                        String mPosterPath = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_POSTER_PATH);
-                        Log.d(TAG, "onPostExecute: ABCD: Movie Poster path" + mPosterPath);
-
-                        String mRelease = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_DATE_OF_RELEASE);
-                        Log.d(TAG, "onPostExecute: ABCD: Movie Date of release: " + mRelease);
-
-                        Double mVoteAverage = cursor.getDouble(MoviesContract.MoviesFavourite.COL_MOVIE_VOTER_AVERAGE);
-
-                        Log.d(TAG, "onPostExecute: ABCD: Voter Average:" + mVoteAverage);
-
-
-                        Results results = new Results(mMovieID,mTitle, mRelease,  mPosterPath, mSynopsis, mVoteAverage);
-
-                        Log.d(TAG, "onPostExecute: : Results" + results);
-
-                        mMovies.add(results);
-                    }
-
-
-                    while (cursor.moveToNext());
-                    Log.d(TAG, "onPostExecute:  mMovies:" + mMovies);
-
-                }
-
-
-
+                Emptyfavoritemovies.setVisibility(View.GONE);
                 mGridAdapter = new GridViewAdapter(MainActivity.this, R.layout.layout_for_grid, mMovies);
                 gridView.setAdapter(mGridAdapter);
                 gridView.setVisibility(View.VISIBLE);
 
+                mGridAdapter.notifyDataSetChanged();
 
+                if (mGridAdapter.getCount() == 0) {
+                    Log.d(TAG, "onPostExecute: ABC: GridAdapter is zero");
+                    Emptyfavoritemovies.setVisibility(View.VISIBLE);
+                    return;
 
+                }
             }
 
             @Override
@@ -356,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 super.onPreExecute();
             }
+
         }.execute();
     }
 
@@ -366,25 +347,23 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onSaveInstanceState: MSP- On save Instance");
 
         if (mGridAdapter == null) {
-            Log.d(TAG, "onSaveInstanceState: MSP- GridAdapter is null");
             if (ErrorMessageDisplay.isShown()) {
                 Log.d(TAG, "onSaveInstanceState: MSP- Error message condition is Checked");
-
                 String Error = ErrorMessageDisplay.getText().toString();
-
                 outState.putString("error", Error);
             }
         }
-
         if (mGridAdapter != null) {
-            Log.d(TAG, "onSaveInstanceState: MSP- Gridadapter is not null");
+            //Log.d(TAG, "onSaveInstanceState: HUDSON- Gridadapter is not null" + mGridAdapter);
             ArrayList<Results> movies = mGridAdapter.getmGridData();
+
+            Log.d(TAG, "onSaveInstanceState: MSP: " + movies);
             if (movies != null && !movies.isEmpty()) {
                 outState.putParcelableArrayList("Saved_movies", movies);
             }
         }
-
         super.onSaveInstanceState(outState);
     }
+
 
 }

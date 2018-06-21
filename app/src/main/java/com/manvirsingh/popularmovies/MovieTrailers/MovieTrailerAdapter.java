@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,18 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.manvirsingh.popularmovies.R;
 import com.manvirsingh.popularmovies.Trailers;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapter.TrailerViewHolder> {
+
+    private static final String TAG = "MovieTrailerAdapter";
 
 
     private ArrayList<MovieTrailer> mTrailer;
@@ -44,6 +49,7 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
     public void onBindViewHolder(@NonNull final TrailerViewHolder holder, final int position) {
 
         final MovieTrailer movieTrailer = mTrailer.get(position);
+        Log.d(TAG, "onBindViewHolder: XYZ: " + mTrailer);
 
         final String url = "https://www.youtube.com/watch?v=" + movieTrailer.getKey();
 
@@ -54,9 +60,11 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: MSP:On Click Listener"+url);
 
                 holder.webView.loadUrl(url);
             }
+
         });
 
     }
@@ -97,8 +105,18 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
         public void setKey(String key) {
             Key.setText(key);
 
-
         }
+
+    }
+
+    public void add(List<MovieTrailer> trailers) {
+        mTrailer.clear();
+        mTrailer.addAll(trailers);
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<MovieTrailer> getmTrailer() {
+        return mTrailer;
 
     }
 }

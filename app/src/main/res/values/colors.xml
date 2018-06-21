@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorPrimary">#B00020</color>
     <color name="colorPrimaryDark">#0288D1</color>
     <color name="colorAccent">#FFD740</color>
     <color name="colorPrimaryLight">#B3E5FC</color>
@@ -10,4 +10,8 @@
     <color name="detail_accent_pane_background">#455A64</color>
     <color name="detail_accent_label">#90A4AE</color>
     <color name="activated">#E0E0E0</color>
+    <color name="Blue_50">#64B5F6</color>
+    <color name="Dark_Red">#B00020</color>
+    <color name="pink_a200">#e7b2bc</color>
+    <color name="pink_300">#F06292</color>
 </resources>

@@ -30,16 +30,14 @@ public class GridViewAdapter extends ArrayAdapter<Results> {
     private ArrayList<Results> mGridData;
 
 
-
     private final String BASE_URL_IMAGE = "http://image.tmdb.org/t/p/";
 
     private final static String QUERY_PARAM = "w185";
 
 
-
-
     public GridViewAdapter(Context mContext, int layoutResourceId, ArrayList<Results> mGridData) {
         super(mContext, R.layout.layout_for_grid, mGridData);
+        Log.d(TAG, "GridViewAdapter: ABC: Grid view Adapter");
 
         this.mContext = mContext;
         this.layoutResourceId = layoutResourceId;
@@ -49,6 +47,7 @@ public class GridViewAdapter extends ArrayAdapter<Results> {
 
     @Override
     public int getCount() {
+        Log.d(TAG, "getCount: ABC: GET COUNT");
 
         return mGridData.size();
     }
@@ -66,7 +65,7 @@ public class GridViewAdapter extends ArrayAdapter<Results> {
         ViewHolder holder;
 
         if (view == null) {
-            Log.d(TAG, "getView: MSP- Inflating Layout");
+            Log.d(TAG, "getView: ABC- Inflating Layout");
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             view = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
@@ -80,10 +79,12 @@ public class GridViewAdapter extends ArrayAdapter<Results> {
 
 
         } else {
+            Log.d(TAG, "getView: ABC- Else statement of Layout Inflation");
             holder = (ViewHolder) view.getTag();
         }
 
         Results item = mGridData.get(position);
+        Log.d(TAG, "getView: ABC:" + item);
         //holder.titleTextView.setText(item.getTitle());
         holder.vote_average.setText(String.valueOf(item.getVote_average()));
 
@@ -91,11 +92,15 @@ public class GridViewAdapter extends ArrayAdapter<Results> {
         Uri uri = Uri.parse(BASE_URL_IMAGE).buildUpon().appendEncodedPath(QUERY_PARAM).appendEncodedPath(item.getPoster_path()).build();
 
         Picasso.get().load(uri).placeholder(R.drawable.placeholder).into(holder.imageView);
+        Log.d(TAG, "getView: ABC: Picasso");
         return view;
+
+
     }
 
 
     public ArrayList<Results> getmGridData() {
+        Log.d(TAG, "getmGridData: ABCDE: Array Method Executed");
         return mGridData;
     }
 

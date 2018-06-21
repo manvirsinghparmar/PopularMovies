@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    >
 
 
     <GridView
@@ -50,7 +51,23 @@
         android:layout_marginTop="169dp"
         android:text="@string/detail_error_message"
         android:visibility="invisible"
+        android:textSize="@dimen/text_size_Error_Message"
+        android:textColor="@color/Dark_Red"
+        android:padding="12dp"
+
+
        />
+
+    <TextView
+        android:id="@+id/Favorite_movie_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/error_message"
+        android:layout_centerHorizontal="true"
+        android:text="Empty!!!...Add Favorite Movies..."
+        android:textColor="@color/Dark_Red"
+        android:textStyle="bold"
+        android:visibility="invisible"/>
 
 
 

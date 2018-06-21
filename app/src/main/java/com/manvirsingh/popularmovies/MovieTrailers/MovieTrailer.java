@@ -1,6 +1,9 @@
 package com.manvirsingh.popularmovies.MovieTrailers;
 
-public class MovieTrailer {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class MovieTrailer implements Parcelable {
 
     private String id;
     private String key;
@@ -18,6 +21,9 @@ public class MovieTrailer {
         this.url = url;
     }
 
+
+
+
     public String getUrl() {
         return url;
     }
@@ -27,6 +33,8 @@ public class MovieTrailer {
     }
 
     public MovieTrailer() {
+
+
     }
 
     public String getId() {
@@ -79,4 +87,44 @@ public class MovieTrailer {
                 ", size=" + size +
                 '}';
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    //Constructor for Parcelable
+    public MovieTrailer(Parcel in) {
+        id = in.readString();
+        key = in.readString();
+        name = in.readString();
+        type = in.readString();
+        size = in.readInt();
+        url = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(key);
+        dest.writeString(name);
+        dest.writeString(type);
+        dest.writeInt(size);
+        dest.writeString(url);
+    }
+
+        public static final Creator<MovieTrailer> CREATOR = new Creator<MovieTrailer>() {
+
+        @Override
+        public MovieTrailer createFromParcel(Parcel in) {
+            return new MovieTrailer(in);
+        }
+
+        @Override
+        public MovieTrailer[] newArray(int size) {
+            return new MovieTrailer[size];
+        }
+    };
+
 }

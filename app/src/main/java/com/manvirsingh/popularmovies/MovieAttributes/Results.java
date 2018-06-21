@@ -5,7 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-    public class Results implements Parcelable {
+public class Results implements Parcelable {
     private static final String TAG = "Results";
 
     private String title;
@@ -15,10 +15,10 @@ import android.util.Log;
     private double vote_average;
     private int id;
 
-     public Results() {
+    public Results() {
     }
 
-    public Results( int id,String title,String release_date,String poster_path,String overview, double vote_average ) {
+    public Results(int id, String title, String release_date, String poster_path, String overview, double vote_average) {
         this.title = title;
         this.poster_path = poster_path;
         this.overview = overview;
@@ -27,16 +27,14 @@ import android.util.Log;
         this.id = id;
     }
 
-        public int getId() {
+    public int getId() {
         return id;
     }
-
 
 
     public double getVote_average() {
         return vote_average;
     }
-
 
 
     public String getTitle() {
@@ -45,12 +43,9 @@ import android.util.Log;
     }
 
 
-
-
     public String getPoster_path() {
         return poster_path;
     }
-
 
 
     public String getOverview() {
@@ -61,8 +56,6 @@ import android.util.Log;
     public String getRelease_date() {
         return release_date;
     }
-
-
 
 
     @Override
@@ -82,6 +75,7 @@ import android.util.Log;
 
     }
 
+    //Constructor for Parceable
     public Results(Parcel in) {
         title = in.readString();
 

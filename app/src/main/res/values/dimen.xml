@@ -2,5 +2,14 @@
 <resources>
     
     
-    <dimen name="text_size_title">18sp</dimen>
+    <dimen name="text_size_title">20sp</dimen>
+    <dimen name="text_size_Author">16sp</dimen>
+    <dimen name="text_size_Review">16sp</dimen>
+    <dimen name="text_size_Author_Name">16sp</dimen>
+    <dimen name="text_size_Review_Description">14sp</dimen>
+    <dimen name="text_size_Error_Message">18sp</dimen>
+    <dimen name="text_size_button">10sp</dimen>
+
+    <!-- Number of columns-->
+    <integer name="grid_number_columns">2</integer>
     </resources>

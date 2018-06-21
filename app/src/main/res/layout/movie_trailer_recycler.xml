@@ -3,8 +3,9 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    android:id="@+id/trailer_card_layout">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,6 +19,7 @@
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
             android:fontFamily="sans-serif"
+            android:textColor="@color/Dark_Red"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +35,8 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/trailer_name"
             app:layout_constraintTop_toBottomOf="@+id/trailer_name"
-            tools:text="Type of Video" />
+            tools:text="Type of Video"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/trailer_key"
@@ -70,11 +73,11 @@
             android:layout_height="2dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:background="@color/Dark_Red"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/trailer_web_view"
-            app:layout_constraintTop_toBottomOf="@+id/trailer_web_view"
-            app:srcCompat="@android:color/darker_gray" />
+            app:layout_constraintTop_toBottomOf="@+id/trailer_web_view" />
 
         <ImageView
             android:id="@+id/imageView7"

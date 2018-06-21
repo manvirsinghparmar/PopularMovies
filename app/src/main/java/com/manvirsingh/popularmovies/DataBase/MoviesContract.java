@@ -26,20 +26,12 @@ public class MoviesContract {
         public static final String COLUMN_VOTER_AVERAGE = "voter_average";
 
 
-
-
         public static final int COL_MOVIE_ID = 1;
         public static final int COL_MOVIE_TITLE = 2;
         public static final int COL_MOVIE_DATE_OF_RELEASE = 3;
         public static final int COL_MOVIE_POSTER_PATH = 4;
         public static final int COL_MOVIE_SYNOPSIS = 5;
         public static final int COL_MOVIE_VOTER_AVERAGE = 6;
-
-
-
-        ;
-
-
 
     }
 
