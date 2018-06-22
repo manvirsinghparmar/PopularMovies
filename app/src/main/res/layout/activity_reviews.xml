@@ -42,13 +42,11 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="244dp"
-        android:text="@string/detail_error_message"
+        android:padding="12dp"
+        android:text="@string/review_error_message"
         android:textColor="@color/Dark_Red"
+        android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/main_progressbar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,11 +62,11 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:textColor="@color/Dark_Red"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/review_progressbar"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView"
         app:layout_constraintStart_toStartOf="@+id/recyclerView"
         app:layout_constraintTop_toTopOf="@+id/recyclerView"
-        tools:text="No Reviews Available for this movie"
-        android:visibility="gone"/>
+        tools:text="No Reviews Available for this movie" />
 
 </android.support.constraint.ConstraintLayout>

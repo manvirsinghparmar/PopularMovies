@@ -130,11 +130,14 @@ public class Reviews extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResultReviews> call, Throwable t) {
                 Errormessage.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.INVISIBLE);
+                mRecylerView.setVisibility(View.INVISIBLE);
 
                 Toast.makeText(Reviews.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
 
             }
         });
+
+
     }
 }

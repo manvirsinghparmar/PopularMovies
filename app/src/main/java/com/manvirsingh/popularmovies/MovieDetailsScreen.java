@@ -1,5 +1,6 @@
 package com.manvirsingh.popularmovies;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -54,6 +55,8 @@ public class MovieDetailsScreen extends AppCompatActivity {
     private Button Favourite_Button;
     private Button Remove_Favourite_button;
 
+    int deletemovie = 0;
+
     private Cursor cursor;
 
     private GridViewAdapter mGridAdapter;
@@ -64,6 +67,9 @@ public class MovieDetailsScreen extends AppCompatActivity {
     private final static String QUERY_PARAM = "w500";
 
     private Results mResult;
+
+    public MovieDetailsScreen() {
+    }
 
 
     @Override
@@ -177,6 +183,7 @@ public class MovieDetailsScreen extends AppCompatActivity {
     }
 
 
+    @SuppressLint("StaticFieldLeak")
     public void AddtoFavourite() {
 
         new AsyncTask<Void, Void, Void>() {
@@ -214,7 +221,7 @@ public class MovieDetailsScreen extends AppCompatActivity {
 
                     final Uri uri = getContentResolver().insert(MoviesContract.MoviesFavourite.CONTENT_URI, cv);
 
-                    Log.d(TAG, "doInBackground: MSP- " + uri);
+                    Log.d(TAG, "doInBackground: A_B: " + uri);
 
                 }
 
@@ -232,6 +239,7 @@ public class MovieDetailsScreen extends AppCompatActivity {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void RemoveAsFavourite() {
 
         new AsyncTask<Void, Void, Void>() {
@@ -250,9 +258,6 @@ public class MovieDetailsScreen extends AppCompatActivity {
 
                     getContentResolver().delete(uri, COLUMN_MOVIE_ID + " = " + movieID, null);
 
-                    Log.d(TAG, "doInBackground: MSP: Remove button executed ");
-
-
                 }
                 return null;
 
@@ -265,13 +270,14 @@ public class MovieDetailsScreen extends AppCompatActivity {
 
                 Toast.makeText(MovieDetailsScreen.this, "Movie Removed From Favorites", Toast.LENGTH_LONG).show();
 
+
                 super.onPostExecute(aVoid);
             }
         }.execute();
 
-
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void updateFavoriteButtons() {
 
         new AsyncTask<Void, Void, Boolean>() {

@@ -14,6 +14,8 @@
 
     <!-- Error messages -->
     <string name="detail_error_message">Movie data not available/Check Internet Connection</string>
+    <string name="review_error_message">Reviews not available/Check Internet Connections</string>
+    <string name="trailer_error_message">Trailers not available/Check Internet Connections</string>
 
 
     <!-- Menu Button detail-->

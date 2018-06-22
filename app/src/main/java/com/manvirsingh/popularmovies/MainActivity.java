@@ -1,5 +1,6 @@
 package com.manvirsingh.popularmovies;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -71,17 +72,14 @@ public class MainActivity extends AppCompatActivity {
 
                 ArrayList<Results> movies = savedInstanceState.getParcelableArrayList("Saved_movies");
 
-                try {
-                    mGridAdapter = new GridViewAdapter(this, R.layout.layout_for_grid, movies);
 
-                    gridView.setAdapter(mGridAdapter);
+                mGridAdapter = new GridViewAdapter(this, R.layout.layout_for_grid, movies);
 
-                    //Method call for ON click respond
-                    senddataIntent();
+                gridView.setAdapter(mGridAdapter);
 
-                } catch (NullPointerException e) {
-                    Log.d(TAG, "onCreate: MSP-NullPointerException" + e.getMessage());
-                }
+                //Method call for ON click respond
+                senddataIntent();
+
 
             } else {
 
@@ -89,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
                     ErrorMessageDisplay.setVisibility(View.VISIBLE);
 
-
                 }
+
             }
         }
 
@@ -132,12 +130,10 @@ public class MainActivity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.INVISIBLE);
 
-                for (int i = 0; i < list.size(); i++) {
+                mGridAdapter = new GridViewAdapter(MainActivity.this, R.layout.layout_for_grid, list);
+                gridView.setAdapter(mGridAdapter);
+                gridView.setVisibility(View.VISIBLE);
 
-                    mGridAdapter = new GridViewAdapter(MainActivity.this, R.layout.layout_for_grid, list);
-                    gridView.setAdapter(mGridAdapter);
-                    gridView.setVisibility(View.VISIBLE);
-                }
                 //Method call for ON click respond
                 senddataIntent();
 
@@ -183,12 +179,10 @@ public class MainActivity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.INVISIBLE);
 
-                for (int i = 0; i < list.size(); i++) {
+                mGridAdapter = new GridViewAdapter(MainActivity.this, R.layout.layout_for_grid, list);
+                gridView.setAdapter(mGridAdapter);
+                gridView.setVisibility(View.VISIBLE);
 
-                    mGridAdapter = new GridViewAdapter(MainActivity.this, R.layout.layout_for_grid, list);
-                    gridView.setAdapter(mGridAdapter);
-                    gridView.setVisibility(View.VISIBLE);
-                }
                 //Method call for ON click response-Detail Activity
                 senddataIntent();
             }
@@ -219,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                         putExtra("release_date", item.getRelease_date()).
                         putExtra("vote_average", item.getVote_average()).
                         putExtra("movieid", item.getId());
+
 
                 startActivity(intent);
 
@@ -276,8 +271,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void FetchFavouriteMovies() {
-        Log.d(TAG, "FetchFavouriteMovies: ABC: FetchFavouriteMovies ");
+        Log.d(TAG, "FetchFavouriteMovies: MSP: FetchFavouriteMovies ");
 
         new AsyncTask<Void, Void, Cursor>() {
             @Override
@@ -287,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
                 Cursor cursor = getContentResolver().query(MoviesContract.MoviesFavourite.CONTENT_URI, null, null, null, null);
                 Log.d(TAG, "doInBackground:: " + cursor);
 
-               mMovies.clear();
+                mMovies.clear();
                 if (cursor != null && cursor.moveToFirst()) {
                     do {
                         String mTitle = cursor.getString(MoviesContract.MoviesFavourite.COL_MOVIE_TITLE);
@@ -300,36 +296,36 @@ public class MainActivity extends AppCompatActivity {
                         Results results = new Results(mMovieID, mTitle, mRelease, mPosterPath, mSynopsis, mVoteAverage);
 
                         mMovies.add(results);
-
-
                     }
 
                     while (cursor.moveToNext());
                 }
-
                 return cursor;
             }
 
+
             @Override
             protected void onPostExecute(Cursor cursor) {
-               progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
                 super.onPostExecute(cursor);
-
 
                 Emptyfavoritemovies.setVisibility(View.GONE);
                 mGridAdapter = new GridViewAdapter(MainActivity.this, R.layout.layout_for_grid, mMovies);
                 gridView.setAdapter(mGridAdapter);
+                senddataIntent();
                 gridView.setVisibility(View.VISIBLE);
+
 
                 mGridAdapter.notifyDataSetChanged();
 
                 if (mGridAdapter.getCount() == 0) {
-                    Log.d(TAG, "onPostExecute: ABC: GridAdapter is zero");
+                    Log.d(TAG, "onPostExecute: MSP: GridAdapter is zero");
                     Emptyfavoritemovies.setVisibility(View.VISIBLE);
                     return;
 
                 }
             }
+
 
             @Override
             protected void onPreExecute() {

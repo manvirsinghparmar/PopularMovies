@@ -54,6 +54,7 @@
         android:textSize="@dimen/text_size_Error_Message"
         android:textColor="@color/Dark_Red"
         android:padding="12dp"
+        android:textStyle="bold"
 
 
        />

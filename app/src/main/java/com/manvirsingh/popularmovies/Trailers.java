@@ -129,7 +129,7 @@ public class Trailers extends AppCompatActivity {
                             + "MSP-Key:" + list.get(i).getKey() + "\n"
                             + "MSP-SIZE" + list.get(i).getSize() + "\n"
                             + "MSP- Name" + list.get(i).getName() + "\n\n\n"
-                    );
+                    );}
 
                     if (list.isEmpty()) {
                         TrailerEmptyMessage.setVisibility(View.VISIBLE);
@@ -145,8 +145,6 @@ public class Trailers extends AppCompatActivity {
                     }
                 }
 
-            }
-
             @Override
             public void onFailure(Call<ResultTrailers> call, Throwable t) {
 
@@ -161,7 +159,7 @@ public class Trailers extends AppCompatActivity {
 
 
     public void showErrorMessage() {
-        Log.d(TAG, "showErrorMessage:NIDHI- Show Error");
+        Log.d(TAG, "showErrorMessage:MSP- Show Error");
 
         ErrorMessageDisplay.setVisibility(View.VISIBLE);
         tRecylerView.setVisibility(View.INVISIBLE);

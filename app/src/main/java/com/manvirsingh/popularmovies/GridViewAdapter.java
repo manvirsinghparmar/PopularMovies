@@ -70,7 +70,6 @@ public class GridViewAdapter extends ArrayAdapter<Results> {
             view = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
 
-
             //holder.titleTextView = (TextView) row.findViewById(R.id.Title_view_grid);
 
             holder.imageView = (ImageView) view.findViewById(R.id.image_view_grid);
@@ -84,7 +83,7 @@ public class GridViewAdapter extends ArrayAdapter<Results> {
         }
 
         Results item = mGridData.get(position);
-        Log.d(TAG, "getView: ABC:" + item);
+        Log.d(TAG, "getView: ABC: GET Item from mGridData" );
         //holder.titleTextView.setText(item.getTitle());
         holder.vote_average.setText(String.valueOf(item.getVote_average()));
 
@@ -92,7 +91,7 @@ public class GridViewAdapter extends ArrayAdapter<Results> {
         Uri uri = Uri.parse(BASE_URL_IMAGE).buildUpon().appendEncodedPath(QUERY_PARAM).appendEncodedPath(item.getPoster_path()).build();
 
         Picasso.get().load(uri).placeholder(R.drawable.placeholder).into(holder.imageView);
-        Log.d(TAG, "getView: ABC: Picasso");
+        Log.d(TAG, "getView: MSP: Picasso");
         return view;
 
 
@@ -100,7 +99,7 @@ public class GridViewAdapter extends ArrayAdapter<Results> {
 
 
     public ArrayList<Results> getmGridData() {
-        Log.d(TAG, "getmGridData: ABCDE: Array Method Executed");
+        Log.d(TAG, "getmGridData: ABC: Array Method Executed");
         return mGridData;
     }
 
